@@ -67,7 +67,7 @@ NAV = [
     ("buy", "Buy", "{{link:buy}}"),
     ("moving", "Moving to Denver", "{{link:moving-to-denver}}"),
     ("neighborhoods", "Neighborhoods", "{{link:neighborhoods}}"),
-    ("market", "Market", "{{link:market}}"),
+    ("market", "Insights", "{{link:market}}"),
     ("about", "About", "{{link:about}}"),
 ]
 FOOTER_LINKS = [
@@ -77,7 +77,7 @@ FOOTER_LINKS = [
     ("First-Time Buyers", "{{link:first-time-buyers}}"),
     ("Moving to Denver", "{{link:moving-to-denver}}"),
     ("Neighborhoods", "{{link:neighborhoods}}"),
-    ("Market Updates", "{{link:market}}"),
+    ("Insights", "{{link:market}}"),
     ("About", "{{link:about}}"),
     ("Privacy Policy", "{{link:privacy}}"),
 ]
@@ -86,11 +86,37 @@ EHO_SVG = ('<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="curr
            '<path d="M3 11 12 4l9 7v9H3z"/><path d="M8 13h8M8 16.5h8"/></svg>')
 
 
+POSTS = []  # filled in main(): article pages with a "post" block, newest first
+POST_CATEGORIES = ["Market Updates", "Seller Tips", "Buyer Tips", "Neighborhoods"]
+
+
+def post_date(meta):
+    d = date.fromisoformat(meta.get("published", meta.get("updated", TODAY)))
+    return f"{d:%B} {d.day}, {d.year}"
+
+
+def nav_dropdown(limit=4):
+    rows = "".join(
+        f'<li><a href="{{{{link:{m["slug"]}}}}}"><span class="dd-meta">{m["post"]["category"]} · {post_date(m)}</span>'
+        f'<span class="dd-title">{m.get("headline", m["title"])}</span></a></li>'
+        for m in POSTS[:limit])
+    return (f'<div class="dropdown"><ul>{rows}</ul>'
+            f'<a class="dd-all" href="{{{{link:market}}}}">All Insights</a></div>')
+
+
 def header(nav_key):
     current = ' aria-current="page"'
-    items = "".join(
-        f'<li><a href="{href}"{current if key == nav_key else ""}>{label}</a></li>'
-        for key, label, href in NAV)
+    items, mitems = "", ""
+    for key, label, href in NAV:
+        cur = current if key == nav_key else ""
+        if key == "market" and POSTS:
+            items += f'<li class="has-dd"><a href="{href}"{cur}>{label}</a>{nav_dropdown()}</li>'
+            subs = "".join(f'<li><a class="msub" href="{{{{link:{m["slug"]}}}}}">{m.get("headline", m["title"])}</a></li>'
+                           for m in POSTS[:3])
+            mitems += f'<li><a href="{href}"{cur}>{label}</a></li>{subs}'
+        else:
+            items += f'<li><a href="{href}"{cur}>{label}</a></li>'
+            mitems += f'<li><a href="{href}"{cur}>{label}</a></li>'
     return f'''<header class="site-header">
   <nav class="wrap nav" aria-label="Main">
     <a class="brand" href="{{{{link:index}}}}">
@@ -98,9 +124,57 @@ def header(nav_key):
       <span>RE/MAX Professionals</span>
     </a>
     <ul class="nav-links">{items}</ul>
-    <details class="mnav"><summary>Menu</summary><ul>{items}</ul></details>
+    <details class="mnav"><summary>Menu</summary><ul>{mitems}</ul></details>
   </nav>
 </header>'''
+
+
+def post_card(m):
+    p = m["post"]
+    return (f'<article class="path post-card" data-cat="{p["category"]}">'
+            f'<p class="eyebrow">{p["category"]} · {post_date(m)}</p>'
+            f'<h3>{m.get("headline", m["title"])}</h3>'
+            f'<p>{p["summary"]}</p>'
+            f'<a class="text-link" href="{{{{link:{m["slug"]}}}}}">{p.get("cta", "Read More")}</a></article>')
+
+
+def posts_all():
+    cats = [c for c in POST_CATEGORIES if any(m["post"]["category"] == c for m in POSTS)]
+    tabs = ""
+    if len(cats) > 1:
+        tabs = ('<div class="post-tabs" role="tablist" aria-label="Filter posts">'
+                '<button type="button" class="on" data-filter="">All</button>'
+                + "".join(f'<button type="button" data-filter="{c}">{c}</button>' for c in cats) + '</div>')
+    script = '''<script>
+(function () {
+  var tabs = document.querySelectorAll(".post-tabs button");
+  tabs.forEach(function (b) {
+    b.addEventListener("click", function () {
+      tabs.forEach(function (t) { t.classList.toggle("on", t === b); });
+      var f = b.getAttribute("data-filter");
+      document.querySelectorAll(".post-grid .post-card").forEach(function (c) {
+        c.hidden = !!f && c.getAttribute("data-cat") !== f;
+      });
+    });
+  });
+})();
+</script>''' if tabs else ""
+    return f'{tabs}<div class="next-reads post-grid">{"".join(post_card(m) for m in POSTS)}</div>{script}'
+
+
+def posts_latest(n=3):
+    if len(POSTS) < 2:
+        return ""
+    return f'''<section class="band tint" id="insights">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">New Every Week</p>
+        <h2>Latest Insights</h2>
+      </div>
+      <div class="paths">{"".join(post_card(m) for m in POSTS[:n])}</div>
+      <p style="margin-top:24px"><a class="text-link" href="{{{{link:market}}}}">All Insights</a></p>
+    </div>
+  </section>'''
 
 
 def footer(legal_extra=""):
@@ -376,6 +450,7 @@ def render(meta, body, mode):
     content = body
     if meta.get("valuation") is not False:
         content = content.replace("{{valuation}}", valuation(slug, meta.get("valuation", {}) or {}))
+    content = content.replace("{{posts:all}}", posts_all()).replace("{{posts:latest}}", posts_latest())
     content = content.replace("{{contact}}", contact(slug, meta.get("contact", {}) or {}))
     if meta.get("pdf"):
         content = content.replace("{{download}}", guide_download(slug, meta["pdf"]))
@@ -437,6 +512,11 @@ def strip_for_artifact(page):
 
 def main():
     pages = [parse(p) for p in sorted(SRC.glob("*.html"))]
+    POSTS[:] = sorted((m for m, _ in pages if m.get("post")),
+                      key=lambda m: m.get("published", m.get("updated", TODAY)), reverse=True)
+    for m in POSTS:
+        if m["post"].get("category") not in POST_CATEGORIES:
+            raise SystemExit(f'{m["slug"]}: post category must be one of {POST_CATEGORIES}')
     scripts_dir = ROOT / "src" / "scripts"
     for meta, _ in pages:
         if meta.get("script_file"):
