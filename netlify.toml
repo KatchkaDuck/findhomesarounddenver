@@ -6,3 +6,10 @@
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
+
+# Send the Netlify address to the real domain so visitors and search engines see one site.
+[[redirects]]
+  from = "https://wonderful-phoenix-3e897c.netlify.app/*"
+  to = "https://findhomesarounddenver.com/:splat"
+  status = 301
+  force = true
