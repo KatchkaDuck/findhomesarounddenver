@@ -67,8 +67,8 @@ NAV = [
     ("buy", "Buy", "{{link:buy}}"),
     ("moving", "Moving to Denver", "{{link:moving-to-denver}}"),
     ("neighborhoods", "Neighborhoods", "{{link:neighborhoods}}"),
-    ("market", "Market", "{{link:index}}#market"),
-    ("about", "About", "{{link:index}}#about"),
+    ("market", "Market", "{{link:market}}"),
+    ("about", "About", "{{link:about}}"),
 ]
 FOOTER_LINKS = [
     ("Sell Your Home", "{{link:sell}}"),
@@ -77,9 +77,9 @@ FOOTER_LINKS = [
     ("First-Time Buyers", "{{link:first-time-buyers}}"),
     ("Moving to Denver", "{{link:moving-to-denver}}"),
     ("Neighborhoods", "{{link:neighborhoods}}"),
-    ("Market Updates", "{{link:index}}#market"),
-    ("About", "{{link:index}}#about"),
-    ("Privacy Policy", "{{link:index}}#about"),
+    ("Market Updates", "{{link:market}}"),
+    ("About", "{{link:about}}"),
+    ("Privacy Policy", "{{link:privacy}}"),
 ]
 
 EHO_SVG = ('<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
