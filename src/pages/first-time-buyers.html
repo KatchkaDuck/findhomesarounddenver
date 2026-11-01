@@ -1,0 +1,200 @@
+<!--meta
+{
+ "title": "First-Time Home Buyer Guide for Denver and Colorado (2026)",
+ "headline": "First-Time Home Buyer Guide for Denver",
+ "description": "Buying your first home in Denver: how much you need upfront, Colorado down payment assistance from CHFA and metroDPA, the 3-3-3 rule, what to check before buying a condo, and a cash-to-close calculator.",
+ "type": "article",
+ "nav": "buy",
+ "published": "2026-10-31",
+ "updated": "2026-10-31",
+ "crumbs": [["Home", "index"], ["Buy a Home", "buy"], ["First-Time Buyers", null]],
+ "legal_extra": "Program terms change often; confirm current CHFA and metroDPA terms with a participating lender. Calculator results are estimates only.",
+ "script_file": "cash-to-close.js",
+ "valuation": false,
+ "contact": {
+   "eyebrow": "Buying Your First Home?",
+   "heading": "Let's Map Out Your First Purchase",
+   "text": "Tell me where you are in the process. I'll reply within one business day with next steps, including lenders who work with Colorado's assistance programs.",
+   "interest": "Buying my first home"
+ }
+}
+-->
+  <section class="page-hero-band"><div class="wrap page-hero">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="{{link:index}}">Home</a><span aria-hidden="true">/</span><a href="{{link:buy}}">Buy a Home</a><span aria-hidden="true">/</span><span>First-Time Buyers</span></nav>
+    <h1>First-Time Home Buyer Guide for Denver</h1>
+    <p class="lede">How much you really need upfront, the Colorado programs that can help with your down payment, and how to avoid the mistakes that cost first-time buyers the most.</p>
+    <p class="byline"><span>By <b>Chris Nowakiwsky</b>, Broker Associate, RE/MAX Professionals</span><span>Updated October 2026</span></p>
+  </div></section>
+
+  <div class="wrap guide">
+    <nav class="toc" aria-label="In this guide">
+      <p class="eyebrow">In This Guide</p>
+      <a href="#upfront">How Much You Need Upfront</a>
+      <a href="#assistance">Down Payment Assistance</a>
+      <a href="#calculator">Cash-to-Close Calculator</a>
+      <a href="#afford">How Much Home You Can Afford</a>
+      <a href="#condo">Buying a Condo or Townhome</a>
+      <a href="#mistakes">Mistakes to Avoid</a>
+      <a href="#faq">First-Time Buyer FAQ</a>
+    </nav>
+
+    <article class="article">
+      <section id="upfront">
+        <h2>How Much You Need Upfront</h2>
+        <p>You probably need less than you think. The 20% down payment is a common goal, not a requirement. These are the usual minimums:</p>
+        <ul class="list">
+          <li><strong>Conventional loans.</strong> As little as 3% down for many first-time buyers. With less than 20% down, you'll pay private mortgage insurance until you build enough equity.</li>
+          <li><strong>FHA loans.</strong> 3.5% down with a credit score of 580 or higher. FHA is more flexible on credit but carries its own mortgage insurance.</li>
+          <li><strong>VA loans.</strong> No down payment for eligible veterans and service members.</li>
+        </ul>
+        <p>On top of the down payment, plan for closing costs, often a few percent of the price, plus inspections and some savings left over after you move in. In today's market, sellers are often willing to cover part of your closing costs, so ask.</p>
+      </section>
+
+      <section id="assistance">
+        <h2>Down Payment Assistance in Colorado</h2>
+        <p>Two programs help many Denver buyers cover their down payment and closing costs. Both work through participating lenders, so the first step is talking to a lender who offers them.</p>
+        <h3>CHFA (Colorado Housing and Finance Authority)</h3>
+        <ul class="list">
+          <li>A grant of up to 3% of your first mortgage, capped at $25,000, that you don't repay.</li>
+          <li>Or a second mortgage of up to 4% of your first mortgage, capped at $25,000, with no payments until you sell, refinance or move out.</li>
+          <li>You don't have to be a first-time buyer. Income limits apply, you need a credit score of at least 620, and you'll take a homebuyer education class.</li>
+          <li>You must use a CHFA first mortgage, and you'll contribute at least $1,000 of your own money.</li>
+        </ul>
+        <h3>metroDPA</h3>
+        <ul class="list">
+          <li>Assistance for down payment and closing costs, sized as a percentage of your first mortgage, for homes in participating Front Range cities and counties, including Denver.</li>
+          <li>Household income up to $195,600 and a credit score above 640.</li>
+          <li>It's a 30-year, interest-free second mortgage with no monthly payments, repaid when you sell, refinance or move out. It isn't forgiven.</li>
+          <li>Buying in Denver County? Ask your lender about the city's Denver Advantage program too.</li>
+        </ul>
+        <p>Assistance usually comes with a slightly higher interest rate on your first mortgage. A good lender will show you the numbers with and without it so you can compare.</p>
+      </section>
+
+      <section id="calculator">
+        <h2>Estimate Your Cash to Close</h2>
+        <p>See roughly how much cash you'll need to buy. The starting values are an example for a first condo or townhome. Change any of them.</p>
+        <div class="calc" id="ctc-calc">
+          <div class="calc-fields">
+            <label class="field" for="ctc-price">Home price ($)
+              <input id="ctc-price" type="number" inputmode="decimal" min="0" step="5000" value="425000">
+            </label>
+            <div class="pair">
+              <label class="field" for="ctc-down">Down payment (%)
+                <input id="ctc-down" type="number" inputmode="decimal" min="0" max="100" step="0.5" value="5">
+              </label>
+              <label class="field" for="ctc-closing">Closing costs (%) <span class="hint">Estimate</span>
+                <input id="ctc-closing" type="number" inputmode="decimal" min="0" max="10" step="0.25" value="3">
+              </label>
+            </div>
+            <label class="field" for="ctc-inspect">Inspections ($) <span class="hint">General, sewer scope and radon</span>
+              <input id="ctc-inspect" type="number" inputmode="decimal" min="0" step="50" value="900">
+            </label>
+            <label class="field" for="ctc-credit">Seller credits ($)
+              <input id="ctc-credit" type="number" inputmode="decimal" min="0" step="500" value="5000">
+            </label>
+            <label class="field" for="ctc-dpa">Down payment assistance ($)
+              <input id="ctc-dpa" type="number" inputmode="decimal" min="0" step="500" value="0">
+            </label>
+          </div>
+          <div class="calc-result" aria-live="polite">
+            <p class="eyebrow">Estimated Cash Needed</p>
+            <p class="big" id="ctc-total">$0</p>
+            <p class="sub" id="ctc-sub">to buy this home</p>
+            <dl>
+              <div><dt>Down payment</dt><dd id="ctc-o-down">$0</dd></div>
+              <div><dt>Closing costs</dt><dd id="ctc-o-closing">$0</dd></div>
+              <div><dt>Inspections</dt><dd id="ctc-o-inspect">$0</dd></div>
+              <div><dt>Seller credits</dt><dd id="ctc-o-credit">$0</dd></div>
+              <div><dt>Assistance</dt><dd id="ctc-o-dpa">$0</dd></div>
+            </dl>
+            <p class="calc-note">Seller credits can only cover closing costs, not your down payment, and loan programs cap how much a seller can contribute. Your lender's Loan Estimate gives the exact figure.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="afford">
+        <h2>How Much Home Can You Afford?</h2>
+        <p>You may have heard of the 3-3-3 rule, also called the 30/30/3 rule. It's a quick test with three parts:</p>
+        <ul class="list">
+          <li>Keep your monthly housing payment under about 30% of your gross income.</li>
+          <li>Have cash equal to about 30% of the price: 20% down plus 10% for closing costs and a cushion.</li>
+          <li>Keep the price under about 3 times your household income.</li>
+        </ul>
+        <p>In Denver, the second and third parts rule out most first-time buyers, and they don't need to. With low-down-payment loans and assistance programs, the first part is the one that matters most: can you comfortably afford the monthly payment and still save? Run your numbers in the <a href="{{link:buy}}#calculator">monthly payment calculator</a>, then get pre-approved for a real answer.</p>
+      </section>
+
+      <section id="condo">
+        <h2>Buying a Condo or Townhome</h2>
+        <p>Many first homes in Denver are condos and townhomes, especially in walkable neighborhoods like <a href="{{link:capitol-hill}}">Capitol Hill</a>. Condos and townhomes also have the most inventory right now, which gives buyers more room to negotiate. With a condo, you're buying into the building as much as the unit. Before you commit, review:</p>
+        <ul class="list">
+          <li><strong>The HOA budget and reserves.</strong> Low reserves can mean a special assessment later.</li>
+          <li><strong>Meeting minutes.</strong> They show what owners are worried about, like a roof, elevator or boiler that needs replacing.</li>
+          <li><strong>What the dues cover.</strong> Heat, water, insurance and exterior maintenance vary widely by building.</li>
+          <li><strong>Parking and storage.</strong> In older buildings, parking may be assigned, rented separately or not available at all.</li>
+          <li><strong>Loan approval.</strong> Some buildings aren't approved for FHA or VA loans, which matters if you're using one.</li>
+          <li><strong>Rental and pet rules.</strong> Especially if you might rent the unit out when you move up.</li>
+        </ul>
+      </section>
+
+      <section id="mistakes">
+        <h2>Mistakes to Avoid</h2>
+        <ul class="list">
+          <li><strong>Shopping before you're pre-approved.</strong> You'll lose time on homes you can't buy, and sellers won't take your offer seriously.</li>
+          <li><strong>Draining your savings to close.</strong> Keep a cushion for the surprises every first year of homeownership brings.</li>
+          <li><strong>Skipping the sewer scope.</strong> It's inexpensive, and a broken sewer line in an older Denver home can be a five-figure repair.</li>
+          <li><strong>Changing your finances before closing.</strong> Don't switch jobs, open new credit or make big purchases until you have the keys.</li>
+          <li><strong>Trusting an emailed wiring instruction.</strong> Wire fraud targets homebuyers. Always confirm by phone with your title company, using a number you look up yourself.</li>
+        </ul>
+      </section>
+
+      <section id="faq">
+        <h2>First-Time Buyer FAQ</h2>
+        <div class="faq">
+          <details open>
+            <summary>How Much Do You Need for a Down Payment in Colorado?</summary>
+            <p>Many first-time buyers put down 3% to 5% with a conventional loan, or 3.5% with an FHA loan. Eligible veterans can put nothing down with a VA loan. Programs like CHFA and metroDPA can help cover the down payment and closing costs.</p>
+          </details>
+          <details>
+            <summary>Is There First-Time Home Buyer Assistance in Denver?</summary>
+            <p>Yes. CHFA offers a grant of up to 3% or a deferred second mortgage of up to 4% of your first mortgage, each capped at $25,000. metroDPA offers a deferred, interest-free second mortgage for homes in Denver and other Front Range areas. Denver County buyers can also ask about Denver Advantage. All work through participating lenders.</p>
+          </details>
+          <details>
+            <summary>Do You Have to Be a First-Time Buyer to Use CHFA?</summary>
+            <p>No. CHFA's homebuyer programs are open to repeat buyers too, as long as you meet the income limits, credit requirements and homebuyer education requirement.</p>
+          </details>
+          <details>
+            <summary>What Credit Score Do I Need to Buy a House?</summary>
+            <p>FHA loans allow 3.5% down with a score of 580 or higher. CHFA requires at least 620, and metroDPA requires above 640. Conventional loans generally start around 620, and a higher score gets you a better rate.</p>
+          </details>
+          <details>
+            <summary>What Is the 3-3-3 Rule in Real Estate?</summary>
+            <p>It's a rule of thumb: keep your housing payment under 30% of gross income, have cash equal to 30% of the price, and buy a home priced at about 3 times your income. In Denver, the monthly payment test is the most useful part, since low-down-payment loans and assistance make the other two unrealistic for most first-time buyers.</p>
+          </details>
+          <details>
+            <summary>Should My First Home Be a Condo?</summary>
+            <p>It can be a smart first step. Condos and townhomes cost less, often sit in walkable neighborhoods, and have more inventory right now, which gives you room to negotiate. Review the HOA's finances carefully, and make sure the building works with your loan type.</p>
+          </details>
+        </div>
+      </section>
+
+      <section id="next">
+        <h2>Keep Reading</h2>
+        <div class="next-reads" style="margin-top:8px">
+          <article class="path">
+            <p class="eyebrow">Buyer Guide</p>
+            <h3>How to Buy a Home in Denver</h3>
+            <p>The Colorado buying process step by step, inspections for older homes, and a monthly payment calculator.</p>
+            <a class="text-link" href="{{link:buy}}">Read the Guide</a>
+          </article>
+          <article class="path">
+            <p class="eyebrow">Neighborhood Guide</p>
+            <h3>Buying in Capitol Hill</h3>
+            <p>Denver's best neighborhood for a first condo or townhome, and the questions to ask before you buy.</p>
+            <a class="text-link" href="{{link:capitol-hill}}">Read the Guide</a>
+          </article>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  {{contact}}
