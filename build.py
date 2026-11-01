@@ -65,7 +65,7 @@ PERSON = {
 NAV = [
     ("sell", "Sell", "{{link:sell}}"),
     ("buy", "Buy", "{{link:buy}}"),
-    ("moving", "Moving to Denver", "{{link:index}}#moving"),
+    ("moving", "Moving to Denver", "{{link:moving-to-denver}}"),
     ("neighborhoods", "Neighborhoods", "{{link:neighborhoods}}"),
     ("market", "Market", "{{link:index}}#market"),
     ("about", "About", "{{link:index}}#about"),
@@ -75,7 +75,7 @@ FOOTER_LINKS = [
     ("Sell and Buy", "{{link:sell-and-buy}}"),
     ("Buy a Home", "{{link:buy}}"),
     ("First-Time Buyers", "{{link:first-time-buyers}}"),
-    ("Moving to Denver", "{{link:index}}#moving"),
+    ("Moving to Denver", "{{link:moving-to-denver}}"),
     ("Neighborhoods", "{{link:neighborhoods}}"),
     ("Market Updates", "{{link:index}}#market"),
     ("About", "{{link:index}}#about"),
