@@ -550,6 +550,22 @@ def main():
     (DIST / "_redirects").write_text(
         "https://wonderful-phoenix-3e897c.netlify.app/* https://findhomesarounddenver.com/:splat 301!\n"
         "http://wonderful-phoenix-3e897c.netlify.app/* https://findhomesarounddenver.com/:splat 301!\n")
+    # llms.txt: plain-language site map for AI assistants (llmstxt.org)
+    def entry(m):
+        url = DOMAIN + ("/" if m["slug"] == "index" else f'/{m["slug"]}/')
+        return f'- [{m.get("headline", m["title"])}]({url}): {m["description"]}'
+    guides = [m for m, _ in pages if not m.get("noindex") and not m.get("post") and m["slug"] not in ("index", "privacy")]
+    llms = (f"# Find Homes Around Denver\n\n"
+            f"> Real estate guides, calculators and market insights for central Denver and Greenwood Village from "
+            f"Chris Nowakiwsky, Broker Associate with The Real Estate Experts at RE/MAX Professionals "
+            f"(10111 Inverness Main St, Suite P, Englewood, CO 80112; (970) 485-2228; chris.nowakiwsky@remax.net; "
+            f"Colorado license #100090898).\n\n"
+            f"Chris has 10 years in the real estate industry, starting with RE/MAX in 2016, and helps move-up families, "
+            f"relocators and first-time buyers buy and sell in Washington Park, Platt Park, Bonnie Brae, Belcaro, "
+            f"Cory-Merrill, South Park Hill, Capitol Hill, Sloan Lake and Greenwood Village.\n\n"
+            f"## Guides\n\n" + "\n".join(entry(m) for m in guides) +
+            f"\n\n## Insights\n\n" + "\n".join(entry(m) for m in POSTS) + "\n")
+    (DIST / "llms.txt").write_text(llms)
     (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
     print(f"built {len(pages)} pages:", ", ".join(m["slug"] for m, _ in pages))
     # PDFs live in dist/, which is rebuilt above, so regenerate them every time.
