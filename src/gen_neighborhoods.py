@@ -362,7 +362,7 @@ def page(slug, h):
         <img src="{{{{asset:chris-portrait.jpg}}}}" alt="Chris Nowakiwsky" width="96" height="96">
         <div>
           <blockquote>“{h['take']}”</blockquote>
-          <figcaption>Chris Nowakiwsky, Broker Associate · {TODO}</figcaption>
+          <figcaption>Chris Nowakiwsky, Broker Associate</figcaption>
         </div>
       </figure>
     </div>

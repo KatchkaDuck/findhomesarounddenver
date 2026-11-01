@@ -184,7 +184,7 @@
         <img src="/assets/chris-portrait.jpg" alt="Chris Nowakiwsky" width="96" height="96">
         <div>
           <blockquote>“Mature trees, quiet streets, all while staying in the vibrant heart of the city. I live in South Central Denver, and Wash Park is the neighborhood people ask me about more than any other.”</blockquote>
-          <figcaption>Chris Nowakiwsky, Broker Associate · <span class="todo">Chris: add one firsthand Wash Park detail</span></figcaption>
+          <figcaption>Chris Nowakiwsky, Broker Associate</figcaption>
         </div>
       </figure>
     </div>
@@ -387,6 +387,15 @@
         if (!r.ok) throw new Error(r.status);
         form.reset();
         status.textContent = form.getAttribute('data-success') || 'Thanks. Chris will be in touch within one business day.';
+        var file = form.getAttribute('data-download');
+        if (file) {
+          var link = document.createElement('a');
+          link.href = file; link.className = 'btn btn-primary'; link.textContent = 'Open the PDF';
+          link.setAttribute('download', '');
+          status.appendChild(document.createTextNode(' '));
+          status.appendChild(link);
+          window.location.href = file;
+        }
       }).catch(function () {
         status.textContent = "That didn't go through. Please call or text Chris at (970) 485-2228.";
       }).then(function () { button.disabled = false; });

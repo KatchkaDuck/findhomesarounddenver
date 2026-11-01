@@ -229,6 +229,39 @@ def contact(slug, opts):
   </section>'''
 
 
+def guide_download(slug, opts):
+    """Email-gated PDF download, wired for Netlify Forms."""
+    title, file = opts["title"], opts["file"]
+    return f'''<section class="band tint" id="download">
+    <div class="wrap">
+      <div class="dl-card">
+        <div class="section-head" style="margin-bottom:0">
+          <p class="eyebrow">Free Download</p>
+          <h2>Get the {title} as a PDF</h2>
+          <p>The full guide in a printable PDF to keep, share or read offline. Tell me where to send updates and it downloads right away.</p>
+        </div>
+        <form class="form light" name="guide-download" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-success="Your guide is ready." data-download="{{{{pdf:{file}}}}}" novalidate>
+          <input type="hidden" name="form-name" value="guide-download">
+          <input type="hidden" name="guide" value="{title}">
+          <input type="hidden" name="page" value="{slug}">
+          <p hidden><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <div class="row">
+            <label for="d-name">Name
+              <input id="d-name" name="name" autocomplete="name" required>
+            </label>
+            <label for="d-email">Email
+              <input id="d-email" name="email" type="email" autocomplete="email" required>
+            </label>
+          </div>
+          <button class="btn btn-primary" type="submit">Download the PDF</button>
+          <p class="consent">By downloading, you agree Chris Nowakiwsky of RE/MAX Professionals may follow up by email. No spam, and you can opt out anytime.</p>
+          <p class="form-status" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>'''
+
+
 FORM_JS = '''<script>
 (function () {
   var LIVE = %s;
@@ -255,6 +288,15 @@ FORM_JS = '''<script>
         if (!r.ok) throw new Error(r.status);
         form.reset();
         status.textContent = form.getAttribute('data-success') || 'Thanks. Chris will be in touch within one business day.';
+        var file = form.getAttribute('data-download');
+        if (file) {
+          var link = document.createElement('a');
+          link.href = file; link.className = 'btn btn-primary'; link.textContent = 'Open the PDF';
+          link.setAttribute('download', '');
+          status.appendChild(document.createTextNode(' '));
+          status.appendChild(link);
+          window.location.href = file;
+        }
       }).catch(function () {
         status.textContent = "That didn't go through. Please call or text Chris at (970) 485-2228.";
       }).then(function () { button.disabled = false; });
@@ -335,6 +377,8 @@ def render(meta, body, mode):
     if meta.get("valuation") is not False:
         content = content.replace("{{valuation}}", valuation(slug, meta.get("valuation", {}) or {}))
     content = content.replace("{{contact}}", contact(slug, meta.get("contact", {}) or {}))
+    if meta.get("pdf"):
+        content = content.replace("{{download}}", guide_download(slug, meta["pdf"]))
     page = f'''<!doctype html>
 <html lang="en">
 <head>
@@ -373,6 +417,7 @@ def render(meta, body, mode):
 </html>
 '''
     page = page.replace("{{asset:../styles.css}}", "/styles.css" if live else "styles.css")
+    page = re.sub(r"\{\{pdf:([^}]+)\}\}", lambda m: f"/guides/{m.group(1)}" if live else f"guides/{m.group(1)}", page)
     page = re.sub(r"\{\{link:([a-z0-9-]+)\}\}", lambda m: link(m.group(1)), page)
     page = re.sub(r"\{\{asset:([^}]+)\}\}", lambda m: asset(m.group(1)), page)
     leftovers = re.findall(r"\{\{[^}]*\}\}", page)
@@ -421,6 +466,9 @@ def main():
         f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
     (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
     print(f"built {len(pages)} pages:", ", ".join(m["slug"] for m, _ in pages))
+    # PDFs live in dist/, which is rebuilt above, so regenerate them every time.
+    import subprocess, sys
+    subprocess.run([sys.executable, str(ROOT / "src" / "make_pdfs.py")], check=True)
 
 
 if __name__ == "__main__":

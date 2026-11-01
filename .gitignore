@@ -1,3 +1,4 @@
 /*.html
 assets/_*
 __pycache__/
+src/.pdf-tmp/

@@ -194,6 +194,7 @@
       <a href="#costs">Costs to Buy in Colorado</a>
       <a href="#calculator">Monthly Payment Calculator</a>
       <a href="#faq">Buyer FAQ</a>
+      <a href="#download">Download the PDF</a>
     </nav>
 
     <article class="article">
@@ -364,6 +365,35 @@
     </article>
   </div>
 
+  <section class="band tint" id="download">
+    <div class="wrap">
+      <div class="dl-card">
+        <div class="section-head" style="margin-bottom:0">
+          <p class="eyebrow">Free Download</p>
+          <h2>Get the Buyer's Guide as a PDF</h2>
+          <p>The full guide in a printable PDF to keep, share or read offline. Tell me where to send updates and it downloads right away.</p>
+        </div>
+        <form class="form light" name="guide-download" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-success="Your guide is ready." data-download="/guides/buyer-guide.pdf" novalidate>
+          <input type="hidden" name="form-name" value="guide-download">
+          <input type="hidden" name="guide" value="Buyer's Guide">
+          <input type="hidden" name="page" value="buy">
+          <p hidden><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <div class="row">
+            <label for="d-name">Name
+              <input id="d-name" name="name" autocomplete="name" required>
+            </label>
+            <label for="d-email">Email
+              <input id="d-email" name="email" type="email" autocomplete="email" required>
+            </label>
+          </div>
+          <button class="btn btn-primary" type="submit">Download the PDF</button>
+          <p class="consent">By downloading, you agree Chris Nowakiwsky of RE/MAX Professionals may follow up by email. No spam, and you can opt out anytime.</p>
+          <p class="form-status" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <section class="band" id="contact">
     <div class="wrap">
       <div class="cta">
@@ -454,6 +484,15 @@
         if (!r.ok) throw new Error(r.status);
         form.reset();
         status.textContent = form.getAttribute('data-success') || 'Thanks. Chris will be in touch within one business day.';
+        var file = form.getAttribute('data-download');
+        if (file) {
+          var link = document.createElement('a');
+          link.href = file; link.className = 'btn btn-primary'; link.textContent = 'Open the PDF';
+          link.setAttribute('download', '');
+          status.appendChild(document.createTextNode(' '));
+          status.appendChild(link);
+          window.location.href = file;
+        }
       }).catch(function () {
         status.textContent = "That didn't go through. Please call or text Chris at (970) 485-2228.";
       }).then(function () { button.disabled = false; });

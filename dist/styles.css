@@ -361,3 +361,14 @@ tr:last-child th { border-bottom: 0; }
 .compare.named th[scope="row"] { text-transform: none; letter-spacing: 0; font-family: var(--display); font-size: 1.2rem; font-weight: 500; width: 20%; }
 .compare.named th[scope="row"] a { color: var(--navy); text-decoration: none; }
 .compare.named th[scope="row"] a:hover { text-decoration: underline; }
+/* PDF download card */
+.dl-card { background: var(--card); border-radius: 28px; padding: clamp(32px, 5vw, 60px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+.dl-card h2 { font-size: var(--step-1); }
+.dl-card p { color: var(--muted); }
+.form.light label { color: var(--muted); }
+.form.light input { background: #fff; color: var(--ink); border-color: var(--rule); }
+.form.light input::placeholder { color: #9a948a; }
+.form.light .consent { color: var(--muted); }
+.form.light .form-status { color: var(--navy); display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.form.light .form-status .btn { width: auto; margin: 0; }
+@media (max-width: 820px) { .dl-card { grid-template-columns: 1fr; } }

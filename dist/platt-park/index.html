@@ -193,7 +193,7 @@
         <img src="/assets/chris-portrait.jpg" alt="Chris Nowakiwsky" width="96" height="96">
         <div>
           <blockquote>“If you want to walk to dinner on a Tuesday night and still have a backyard, Platt Park is hard to beat. South Pearl is the reason people fall for it.”</blockquote>
-          <figcaption>Chris Nowakiwsky, Broker Associate · <span class="todo">Chris: confirm or reword</span></figcaption>
+          <figcaption>Chris Nowakiwsky, Broker Associate</figcaption>
         </div>
       </figure>
     </div>
@@ -400,6 +400,15 @@
         if (!r.ok) throw new Error(r.status);
         form.reset();
         status.textContent = form.getAttribute('data-success') || 'Thanks. Chris will be in touch within one business day.';
+        var file = form.getAttribute('data-download');
+        if (file) {
+          var link = document.createElement('a');
+          link.href = file; link.className = 'btn btn-primary'; link.textContent = 'Open the PDF';
+          link.setAttribute('download', '');
+          status.appendChild(document.createTextNode(' '));
+          status.appendChild(link);
+          window.location.href = file;
+        }
       }).catch(function () {
         status.textContent = "That didn't go through. Please call or text Chris at (970) 485-2228.";
       }).then(function () { button.disabled = false; });
