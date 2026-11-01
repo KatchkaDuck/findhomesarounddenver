@@ -254,6 +254,50 @@ HOODS = {
 ),
 }
 
+# REcolorado closed sales, Nov 1, 2025 to Oct 31, 2026, pulled Oct 31, 2026.
+# (subdivision search, single-family n / median / $psf, attached n / median / $psf)
+MARKET = {
+    "washington-park": ("Washington Park", (141, 1450000, 551), (28, 488750, 434)),
+    "platt-park": ("Platt Park or Platte Park", (119, 985000, 483), (9, 830000, 462)),
+    "bonnie-brae": ("Bonnie Brae", (39, 1915000, 535), (0, None, None)),
+    "belcaro": ("Belcaro", (12, 2675000, 574), (0, None, None)),
+    "cory-merrill": ("Cory-Merrill", (63, 1225000, 442), (0, None, None)),
+    "south-park-hill": ("South Park Hill", (58, 1012500, 423), (0, None, None)),
+    "sloan-lake": ("Sloan Lake, Sloans Lake or Sloan's Lake (Denver addresses)", (123, 1040000, 463), (67, 645000, 436)),
+    "greenwood-village": (None, (144, 1972500, 427), (46, 646000, 351)),
+    "capitol-hill": ("Capitol Hill", (11, 975000, 424), (87, 295000, 343)),
+}
+
+
+def money(v):
+    if v >= 1e6:
+        return f"${int(v / 1e4 + 0.5) / 100:.2f}M".replace(".00M", "M")
+    return f"${v:,.0f}"
+
+
+def market_rows(slug):
+    _, sfr, att = MARKET[slug]
+    rows = []
+    for label, (n, med, psf) in (("Single-family", sfr), ("Townhome and condo", att)):
+        if n >= 5:
+            rows.append(f'<tr><td>{label}</td><td class="num">{money(med)}</td><td class="num">${psf:,}</td><td class="num">{n}</td></tr>')
+        elif n > 0:
+            rows.append(f'<tr><td>{label}</td><td class="num" colspan="3">Too few sales to report ({n})</td></tr>')
+    return "\n            ".join(rows)
+
+
+def market_source(slug):
+    sub = MARKET[slug][0]
+    scope = "in the City of Greenwood Village" if sub is None else f"with the subdivision listed as {sub}"
+    return f"Closed sales from November 2025 through October 2026 {scope}. Source: REcolorado MLS. Deemed reliable but not guaranteed."
+
+
+def typical(slug):
+    _, sfr, att = MARKET[slug]
+    if slug == "capitol-hill":
+        return f"About {money(att[1])} for a condo or townhome"
+    return f"About {money(sfr[1])} for a single-family home"
+
 BLURBS = {
     "washington-park": "Two lakes, a 2.6-mile loop, and Denver's most loved park.",
     "platt-park": "Bungalows a few blocks from South Pearl Street.",
@@ -280,7 +324,6 @@ def page(slug, h):
         "updated": UPDATED,
         "crumbs": [["Home", "index"], ["Neighborhoods", "neighborhoods"], [h["name"], None]],
         "legal_extra": h["legal"],
-        "preview_flag": "Design preview · market figures fill in from REcolorado at launch",
         "valuation": {
             "eyebrow": f"Own in {h['name']}?",
             "heading": "See What Your Home Would Sell For Now",
@@ -309,7 +352,7 @@ def page(slug, h):
   <div class="wrap">
     <dl class="glance">
 {glance}
-      <div><dt>Typical Price</dt><dd><span class="todo">REcolorado at launch</span></dd></div>
+      <div><dt>Typical Price</dt><dd>{typical(slug)}</dd></div>
     </dl>
   </div>
 
@@ -359,18 +402,17 @@ def page(slug, h):
       <div class="section-head">
         <p class="eyebrow">Market Snapshot</p>
         <h2>What Homes Are Selling For</h2>
-        <p class="lede">Updated monthly from REcolorado MLS data.</p>
+        <p class="lede">Median sold prices over the last 12 months, from REcolorado.</p>
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Home Type</th><th class="num">Median Sold Price</th><th class="num">Days on Market</th><th class="num">Sold vs. List</th><th class="num">Sales, Last 90 Days</th></tr></thead>
+          <thead><tr><th>Home Type</th><th class="num">Median Sold Price</th><th class="num">Median Price per Sq Ft</th><th class="num">Sales, Last 12 Months</th></tr></thead>
           <tbody>
-            <tr><td>Single-family</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
-            <tr><td>Townhome and condo</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+            {market_rows(slug)}
           </tbody>
         </table>
       </div>
-      <p class="source"><span class="todo">Figures pull from REcolorado before launch</span> Source: REcolorado MLS. Deemed reliable but not guaranteed.</p>
+      <p class="source">{market_source(slug)}</p>
     </div>
   </section>
 
