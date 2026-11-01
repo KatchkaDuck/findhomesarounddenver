@@ -464,6 +464,9 @@ def main():
         for m, _ in pages if not m.get("noindex"))
     (DIST / "sitemap.xml").write_text(
         f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
+    # Files that must sit at the site root as-is (search engine verification, etc.).
+    for f in (ROOT / "static").glob("*"):
+        shutil.copy(f, DIST / f.name)
     (DIST / "_redirects").write_text(
         "https://wonderful-phoenix-3e897c.netlify.app/* https://findhomesarounddenver.com/:splat 301!\n"
         "http://wonderful-phoenix-3e897c.netlify.app/* https://findhomesarounddenver.com/:splat 301!\n")
