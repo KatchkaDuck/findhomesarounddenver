@@ -464,6 +464,9 @@ def main():
         for m, _ in pages if not m.get("noindex"))
     (DIST / "sitemap.xml").write_text(
         f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
+    (DIST / "_redirects").write_text(
+        "https://wonderful-phoenix-3e897c.netlify.app/* https://findhomesarounddenver.com/:splat 301!\n"
+        "http://wonderful-phoenix-3e897c.netlify.app/* https://findhomesarounddenver.com/:splat 301!\n")
     (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
     print(f"built {len(pages)} pages:", ", ".join(m["slug"] for m, _ in pages))
     # PDFs live in dist/, which is rebuilt above, so regenerate them every time.
