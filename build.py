@@ -360,6 +360,7 @@ FORM_JS = '''<script>
         body: new URLSearchParams(new FormData(form)).toString()
       }).then(function (r) {
         if (!r.ok) throw new Error(r.status);
+        if (window.gtag) gtag('event', 'generate_lead', { form_name: form.getAttribute('name'), page_path: location.pathname });
         form.reset();
         status.textContent = form.getAttribute('data-success') || 'Thanks. Chris will be in touch within one business day.';
         var file = form.getAttribute('data-download');
@@ -433,6 +434,16 @@ def schema(meta, body):
     return json.dumps({"@context": "https://schema.org", "@graph": graph}, indent=1, ensure_ascii=False)
 
 
+GA_ID = "G-J4131K7M76"
+GA_TAG = f"""<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+  gtag('config', '{GA_ID}');
+</script>"""
+
+
 def render(meta, body, mode):
     slug = meta["slug"]
     live = mode == "dist"
@@ -473,6 +484,7 @@ def render(meta, body, mode):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Hanken+Grotesk:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="{{{{asset:../styles.css}}}}">
+{GA_TAG if live else ""}
 <script type="application/ld+json">
 {schema(meta, body)}
 </script>
